@@ -1,9 +1,3 @@
----
-# Inventory file (hosts.ini) example:
-# [myservers]
-# web1 ansible_host=192.168.1.100 ansible_user=ubuntu
-# web2 ansible_host=192.168.1.101 ansible_user=ubuntu
-
 - name: Deploy HTML resume to web root
   hosts: webserver
   become: yes
@@ -52,7 +46,7 @@
           LinkedIn: www.linkedin.com/in/abdurrahman-a-a5a601127
           Website: www.abdurrahmanblog.online
           Github: www.github.com/Abo1406
-          Phone: +905050114314
+          Phone: +9****
           Email: abdulrahman.amr1410@gmail.com
 
           
