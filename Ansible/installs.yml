@@ -1,0 +1,14 @@
+- name: Install Apache on Droplet
+  hosts: webserver
+  gather_facts: yes
+  tasks:
+    - name: Install httpd
+      ansible.builtin.yum:
+        name: httpd
+        state: present
+
+    - name: Enable and start httpd
+      ansible.builtin.service:
+        name: httpd
+        state: started
+        enabled: yes

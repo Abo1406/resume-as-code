@@ -1,0 +1,108 @@
+---
+# Inventory file (hosts.ini) example:
+# [myservers]
+# web1 ansible_host=192.168.1.100 ansible_user=ubuntu
+# web2 ansible_host=192.168.1.101 ansible_user=ubuntu
+
+- name: Deploy HTML resume to web root
+  hosts: webserver
+  become: yes
+  vars:
+    target_path: /var/www/html
+    target_file: index.html
+    file_content: |
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Abdurrahman ATA - Resume</title>
+        </head>
+        <body>
+          <pre>
+          RHCSA CERTIFIED AND DEVOPS ENGINEER
+          ABDURRAHMAN ATA
+          Linux, Version Control with Git, MongoDB, PostgreSQL, etcd, Maven, Gradle, Node.js, npm, Cloud &
+          IaaS, Artifact Repository Manager with Nexus, Containers with Docker, CI/CD with Jenkins, AWS
+          Services, Container Orchestration with Kubernetes, Kubernetes on AWS - EKS, IaC with Terraform,
+          Python, Configuration Management with Ansible, Monitoring with Prometheus
+
+          WORK EXPERIENCE
+          TechWorld with Nana
+          DevOps Trainee | 02/2025 - Present
+          As a Software Support Engineer Level 2 at Asis Elektronik ve Bilişim Sistemleri A.Ş., I provide advanced
+          technical support, troubleshoot complex software issues, and ensure the reliability of our systems. My role
+          involves diagnosing problems, implementing solutions, and collaborating with teams to resolve critical incidents.
+          Asis Elektronik ve Bilişim Sistemleri A.Ş.
+          Software Support Engineer | 05/2024 - Present
+          At Metadiag, I provided technical support for diagnostic software, troubleshooting issues, assisting
+          clients, I focused on ensuring customer satisfaction and gained valuable experience in software
+          support.
+          Metadiag Automotive Technologies.
+          Software Support Engineer | 08/2022 - 05/2024
+
+          PROFESSIONAL SUMMARY
+          Dedicated Linux System Administrator with a solid foundation in system management, troubleshooting, and
+          automation. Experienced in ensuring system reliability, performance, and security while providing technical support
+          and solutions. Passionate about continuous learning and leveraging open-source technologies to deliver efficient IT
+          infrastructure solutions.
+          
+          CONTACT
+          Address: Kağıthane - Istanbul
+          LinkedIn: www.linkedin.com/in/abdurrahman-a-a5a601127
+          Website: www.abdurrahmanblog.online
+          Github: www.github.com/Abo1406
+          Phone: +905050114314
+          Email: abdulrahman.amr1410@gmail.com
+
+          
+
+          ACADEMIC HISTORY
+          Bachelor of Science in Automotive Engineering
+          Fırat University | 2018-2022
+          Code Review, Docker Containerization, Kubernetes and Microservices Fundamentals, CI/CD
+          Pipelines and DevSecOps with CodeArts, Redis Migration to Huawei Cloud DCS, Distributed
+          Messaging with DMS, Elasticsearch-Based Search and Indexing (CSS), Serverless Computing with
+          FunctionGraph, API Management Using APIG, Cloud-Native App Management with Cloud
+          Application Engine, Monitoring and Observability (AOM, APM, LTS), Performance Testing and
+          Project Finalization
+          HUAWEI Student Developers (HSD) Türkiye
+          Cloud and DevOps Trainee | 04/2025 - Present
+
+          LANGUAGES
+          English - Native or bilingual proficiency
+          Arabic  - Native or bilingual proficiency
+          Turkish - Native or bilingual proficiency
+
+          CERTIFICATION
+          Red Hat Certified System Administrator – Red Hat
+          Fundamentals of Red Hat Enterprise Linux – Red Hat
+          Ultimate AWS Certified Developer Associate 2025 DVA-C02 – Udemy
+          Complete Linux Training Course – Udemy
+          Linux Sysadmin: Build 5 Hands-On Linux Projects for Real Jobs – Udemy
+          Complete Linux Security & Hardening With Practical Examples – Udemy
+          Complete Linux Troubleshooting Course (Practical Examples) – Udemy
+          Prepare for RHCSA Exam with Practice Course (EX200 – RHEL 9) – Udemy
+          DevOps MasterClass: Terraform Kubernetes Ansible Docker – Udemy
+          Linux Shell Scripting: A Project-Based Approach to Learning – Udemy
+          The Complete SQL Bootcamp: Go from Zero to Hero – Udemy
+          Complete VMware vSphere ESXi and vCenter Administration – Udemy
+          </pre>
+        </body>
+      </html>
+
+  tasks:
+    - name: Ensure web root directory exists
+      file:
+        path: "{{ target_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Deploy HTML file to web root
+      copy:
+        dest: "{{ target_path }}/{{ target_file }}"
+        content: "{{ file_content }}"
+        owner: root
+        group: root
+        mode: '0777'
+

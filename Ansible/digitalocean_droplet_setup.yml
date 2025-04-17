@@ -1,0 +1,35 @@
+- name: Create a new Droplet
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+    - secrets.yml
+  tasks:
+    - name: Create Droplet
+      community.digitalocean.digital_ocean_droplet:
+        state: present
+        oauth_token: "{{ do_api_token }}"
+        name: mydroplet
+        size: s-1vcpu-1gb
+        region: fra1
+        image: centos-stream-9-x64
+        wait_timeout: 500
+      register: my_droplet
+
+    - name: Show Droplet info
+      ansible.builtin.debug:
+        msg: |
+          Droplet ID is {{ my_droplet.data.droplet.id }}
+          First Public IPv4 is {{ (my_droplet.data.droplet.networks.v4 | selectattr('type', 'equalto', 'public')).0.ip_address | default('<none>', true) }}
+          First Private IPv4 is {{ (my_droplet.data.droplet.networks.v4 | selectattr('type', 'equalto', 'private')).0.ip_address | default('<none>', true) }}
+
+    - name: Extract public IP
+      set_fact:
+        droplet_ip: "{{ (my_droplet.data.droplet.networks.v4 | selectattr('type', 'equalto', 'public')).0.ip_address }}"
+
+    - name: Create Dynamic Inventory File
+      copy:
+        dest: "/root/resume-as-code/Ansible/inven.ini"
+        content: |
+          [webserver]
+          {{ droplet_ip }} ansible_user=root ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
